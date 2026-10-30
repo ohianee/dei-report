@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEI Report - Chat IA</title>
+    <link rel="stylesheet" href="/static/estilos.css">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            Chat IA API
+        </h1>
+        <p>
+            Microservicio dedicado exclusivamente a manejar el motor LLM para DEI Report, 
+            aislando la carga del servidor principal.
+        </p>
+        
+        <div class="links">
+            <a href="/docs" class="btn-link">
+                <span class="emoji-icon">⚙️</span> Documentación Interactiva (Swagger)
+            </a>
+            <a href="/redoc" class="btn-link alt-link">
+                <span class="emoji-icon">📖</span> Documentación Detallada (ReDoc)
+            </a>
+            <a href="/openapi.json" class="btn-link json-link">
+                <span class="emoji-icon">🧩</span> Esquema OpenAPI en crudo
+            </a>
+        </div>
+
+        <div class="microservice-info">
+            <span class="emoji-large">🔄</span>
+            <div>
+                El backend principal de análisis DEI (<code>main.py</code>) se encuentra normalmente en
+                <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

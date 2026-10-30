@@ -1,0 +1,83 @@
+<mat-card class="modern-card">
+  <mat-card-header class="table-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>forum</mat-icon>
+    </div>
+    <div>
+      <mat-card-title>{{ 'TABLA_HALLAZGOS_COMENTARIOS.TITULO' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{ 'TABLA_HALLAZGOS_COMENTARIOS.SUBTITULO' | translate }}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content class="table-content">
+    <mat-form-field appearance="outline" class="search-field custom-input">
+      <mat-label>{{ 'TABLA_HALLAZGOS_COMENTARIOS.FILTRAR' | translate }}</mat-label>
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Ej. crazy">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="modern-table">
+
+        <ng-container matColumnDef="repo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_REPO' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <strong class="repo-name">{{element.repo}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_AUTOR' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <code>@{{element.author}}</code> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_CATEGORIA' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="badge-tipo"
+              [class.badge-tono]="element.tipo === 'negative_tone'"
+              [class.badge-toxico]="element.tipo === 'toxicity'">
+              {{ claveTipo(element.tipo) | translate }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="termino">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_TERMINO' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <strong>{{element.termino}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="severidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_SEVERIDAD' | translate }} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-chip [class]="claseSeveridad(element.severidad)">{{ claveSeveridad(element.severidad) | translate }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="contexto">
+          <th mat-header-cell *matHeaderCellDef> {{ 'TABLA_HALLAZGOS_COMENTARIOS.COL_CONTEXTO' | translate }} </th>
+          <td mat-cell *matCellDef="let element" class="contexto-cell"> 
+            <span class="contexto-texto">"...{{element.contexto}}..."</span>
+            @if (element.alternativas) {
+              <div class="alternativa-hint">
+                {{ 'TABLA_HALLAZGOS_COMENTARIOS.SUGERENCIA' | translate }}:
+                @if (esAlternativaTraducible(element.tipo)) {
+                  {{ claveSugerencia(element.alternativas) | translate }}
+                } @else {
+                  {{ element.alternativas }}
+                }
+              </div>
+            }
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasMostrar"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasMostrar;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="6">{{ 'TABLA_HALLAZGOS_COMENTARIOS.SIN_DATOS' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons class="modern-paginator"></mat-paginator>
+  </mat-card-content>
+</mat-card>

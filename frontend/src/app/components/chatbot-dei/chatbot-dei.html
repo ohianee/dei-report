@@ -1,0 +1,72 @@
+<div class="chatbot-wrapper" [class.is-open]="abierto()">
+  
+  @if (abierto()) {
+    <div class="chat-backdrop" (click)="toggleChat()"></div>
+    <div class="chat-panel shadow-soft" [style.width.px]="isDesktop() ? anchoChat() : null">
+      <div class="resizer" (mousedown)="iniciarArrastre($event)"></div>
+      
+      <div class="chat-content-wrapper">
+        <div class="chat-header">
+          <div class="header-info">
+            <div class="bot-avatar">
+              <mat-icon>auto_awesome</mat-icon>
+            </div>
+            <div>
+              <h3>{{ 'CHAT.TITULO' | translate }}</h3>
+              <span class="status-indicator" [class.offline]="!enLinea()">
+                <span class="dot"></span> {{ (enLinea() ? 'CHAT.ONLINE' : 'CHAT.OFFLINE') | translate }}
+              </span>
+            </div>
+          </div>
+          <button mat-icon-button (click)="toggleChat()" class="close-btn">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div class="chat-body" #scrollMe>
+          @for (msg of mensajes(); track $index) {
+            <div class="message-row" [class.user-row]="msg.role === 'user'">
+              @if (msg.role === 'assistant') {
+                <div class="msg-avatar"><mat-icon>smart_toy</mat-icon></div>
+              }
+              <div class="message-bubble" [class.user-bubble]="msg.role === 'user'" [class.bot-bubble]="msg.role === 'assistant'">
+                <markdown [data]="msg.content"></markdown>
+              </div>
+            </div>
+          }
+          
+          @if (mostrandoTyping()) {
+            <div class="message-row">
+              <div class="msg-avatar"><mat-icon>smart_toy</mat-icon></div>
+              <div class="message-bubble bot-bubble typing-indicator">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="chat-footer">
+          <input 
+            type="text" 
+            [placeholder]="'CHAT.PLACEHOLDER' | translate" 
+            [ngModel]="mensajeInput()" 
+            (ngModelChange)="mensajeInput.set($event)"
+            (keyup.enter)="enviarMensaje()"
+            [disabled]="cargando()"
+          >
+          <button mat-icon-button class="send-btn" (click)="enviarMensaje()" [disabled]="!mensajeInput().trim() || cargando()">
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <button 
+    class="chatbot-fab" 
+    mat-fab 
+    (click)="toggleChat()"
+    [matTooltip]="'CHAT.TOOLTIP' | translate">
+    <mat-icon>{{ abierto() ? 'keyboard_arrow_down' : 'chat' }}</mat-icon>
+  </button>
+</div>

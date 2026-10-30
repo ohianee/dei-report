@@ -1,0 +1,18 @@
+<div class="contenedor-grafico">
+    <canvas baseChart
+    aria-hidden="true"
+    [datasets]="radarChartDatasets"
+    [labels]="radarChartLabels"
+    [options]="radarChartOptions"
+    [type]="'radar'">
+    </canvas>
+</div>
+
+<div class="sr-only">
+  <h3>{{ 'GRAFICOS_ACCESIBILIDAD.BIG_FIVE_TITULO' | translate }}</h3>
+  <ul>
+    @for (rasgo of datos | keyvalue; track rasgo.key) {
+      <li>{{ claveRasgo(rasgo.key) | translate }}: {{ rasgo.value }} {{ 'GRAFICOS_ACCESIBILIDAD.APARICIONES' | translate }}</li>
+    }
+  </ul>
+</div>

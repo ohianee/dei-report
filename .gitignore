@@ -1,0 +1,7 @@
+# Backups / exports (código real está en backend/ y frontend/)
+deiReport.zip
+*.zip
+
+# Sistema
+.DS_Store
+Thumbs.db

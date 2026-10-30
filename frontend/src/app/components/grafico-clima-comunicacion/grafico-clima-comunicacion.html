@@ -1,0 +1,18 @@
+<div class="contenedor-grafico">
+    <canvas baseChart
+    aria-hidden="true"
+    [datasets]="doughnutChartDatasets"
+    [labels]="doughnutChartLabels"
+    [options]="doughnutChartOptions"
+    [type]="'doughnut'">
+    </canvas>
+</div>
+
+<div class="sr-only">
+  <h3>{{ 'GRAFICOS_ACCESIBILIDAD.CLIMA_TITULO' | translate }}</h3>
+  <ul>
+    <li>{{ 'GRAFICOS_ACCESIBILIDAD.COM_POSITIVOS' | translate }} {{ datos.porcentajePositivos }}%</li>
+    <li>{{ 'GRAFICOS_ACCESIBILIDAD.COM_NEGATIVOS' | translate }} {{ datos.porcentajeNegativos }}%</li>
+    <li>{{ 'GRAFICOS_ACCESIBILIDAD.COM_NEUTROS' | translate }} {{ datos.porcentajeNeutros }}%</li>
+  </ul>
+</div>

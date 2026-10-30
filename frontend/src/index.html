@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>DEI REPORT</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.svg">
+  <script nonce="NONCE_PLACEHOLDER">
+    try {
+      var guardado = localStorage.getItem('dei_accesibilidad_prefs');
+      if (guardado) {
+        var prefs = JSON.parse(guardado);
+        var html = document.documentElement;
+
+        if (prefs.fuenteDislexia) html.classList.add('dei-fuente-dislexia');
+        if (prefs.negrita) html.classList.add('dei-negrita');
+        
+        if (prefs.paleta && prefs.paleta !== 'normal') {
+          html.classList.add('dei-paleta-' + prefs.paleta);
+        }
+        
+        if (prefs.escalaFuente) {
+          html.style.setProperty('--dei-escala-fuente', prefs.escalaFuente + '%');
+        }
+
+        var prefiereOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var esOscuro = prefs.tema === 'oscuro' || (prefs.tema === 'sistema' && prefiereOscuro);
+        if (esOscuro) {
+          html.classList.add('dei-tema-oscuro');
+        }
+      }
+    } catch (e) {
+      // Ignorar errores si el JSON está corrupto o localStorage no está disponible
+    }
+  </script>
+</head>
+<body>
+  <app-root ngCspNonce="NONCE_PLACEHOLDER"></app-root>
+</body>
+</html>

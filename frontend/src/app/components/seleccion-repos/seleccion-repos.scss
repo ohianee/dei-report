@@ -1,0 +1,288 @@
+.dashboard-container {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  .header-icon-wrapper {
+    background-color: var(--c-lavender-light);
+    color: var(--c-navy);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+
+    mat-icon {
+      font-size: 30px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--c-navy-darkest);
+    font-weight: 800;
+    font-size: 2.2rem;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    margin: 0.25rem 0 0 0;
+    color: var(--c-gray);
+    font-size: 1.1rem;
+  }
+}
+
+.modern-card {
+  width: 100%;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-soft);
+  background: var(--c-white);
+  padding: 3rem; 
+}
+
+.config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.modern-radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem; 
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  
+  mat-radio-button {
+    color: var(--c-navy-darkest);
+  }
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%; 
+  box-sizing: border-box; 
+}
+
+.config-input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.repo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--c-white); 
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--c-lavender-light);
+  max-width: 100%; 
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.repo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap; 
+
+  .flex-grow {
+    flex: 1 1 200px; 
+    width: 100%;
+  }
+
+  ::ng-deep input.mat-mdc-input-element {
+    border: none !important;
+    padding-left: 12px !important; 
+    margin: 0 !important;
+  }
+
+  .btn-delete {
+    color: var(--c-gray);
+    margin-top: 8px; 
+    transition: color 0.2s;
+    &:hover { color: var(--c-estado-mal); }
+  }
+}
+
+.btn-add-repo {
+  align-self: flex-start;
+  color: var(--c-navy-darkest);
+  font-weight: 700;
+  padding: 0;
+  margin-top: 0.5rem;
+  
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.icono-privado {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: var(--c-gray);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c-estado-mal); 
+  background-color: var(--c-estado-mal-bg); 
+  padding: 1.2rem;
+  border-radius: 12px;
+  max-width: 800px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  margin-top: 1rem;
+
+  .btn-submit {
+    background-color: var(--c-navy);
+    color: white;
+    border-radius: var(--border-radius-btn);
+    padding: 0.5rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    height: auto;
+    min-height: 52px;
+    white-space: normal;
+    line-height: 1.2;
+
+    &:disabled {
+      background-color: var(--c-lavender);
+      color: var(--c-purple-muted);
+    }
+  }
+}
+
+.aviso-github {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--c-estado-medio-bg);
+  color: var(--c-estado-medio);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius-card, 12px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+  mat-icon {
+    color: var(--c-estado-medio);
+    flex-shrink: 0;
+  }
+
+  span {
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+  }
+
+  .aviso-github-link {
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: underline;
+    color: var(--c-estado-medio);
+    margin-left: 0.25rem;
+  }
+
+  &.aviso-github--ok {
+    background-color: var(--c-estado-bien-bg);
+    color: var(--c-estado-bien);
+
+    mat-icon {
+      color: var(--c-estado-bien);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .modern-card {
+    padding: 1.5rem;
+  }
+
+  .modern-radio-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .repo-list {
+    padding: 1.5rem 1rem;
+  }
+
+  .repo-row {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+    background: var(--c-lavender-light);
+    padding: 1rem;
+    border-radius: 12px;
+    
+    .btn-delete {
+      align-self: flex-end;
+      margin-top: 0;
+      background: var(--c-white); 
+      border-radius: 50%;
+    }
+  }
+
+  .form-actions .btn-submit {
+    width: 100%;
+  }
+}
+
+:host-context(html.dei-tema-oscuro) {
+  ::ng-deep {
+    .mat-mdc-input-element {
+      color: var(--c-dark-gray) !important;
+    }
+    
+    .mat-mdc-input-element::placeholder {
+      color: var(--c-gray) !important;
+    }
+
+    .mdc-floating-label {
+      color: var(--c-gray) !important;
+    }
+    
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: var(--c-lavender) !important;
+    }
+
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading,
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch,
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover .mdc-notched-outline__trailing {
+      border-color: var(--c-gray) !important;
+    }
+  }
+}

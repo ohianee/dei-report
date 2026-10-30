@@ -1,0 +1,72 @@
+<mat-card class="modern-card">
+  <mat-card-header class="table-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>find_in_page</mat-icon>
+    </div>
+    <div>
+      <mat-card-title>{{ 'TABLA_HALLAZGOS_LENGUAJE.TITULO' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{ 'TABLA_HALLAZGOS_LENGUAJE.SUBTITULO' | translate }}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content class="table-content">
+    <mat-form-field appearance="outline" class="search-field custom-input">
+      <mat-label>{{ 'TABLA_HALLAZGOS_LENGUAJE.FILTRAR' | translate }}</mat-label>
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Ej. whitelist">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="modern-table">
+
+        <ng-container matColumnDef="repo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_REPO' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <strong class="repo-name">{{element.repo}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="path">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_ARCHIVO' | translate }} </th>
+          <td mat-cell *matCellDef="let element" class="path-cell"> {{element.path}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="identificador">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_IDENTIFICADOR' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <code>{{element.identificador}}</code> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="termino">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_TERMINO' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> {{element.termino}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="severidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_SEVERIDAD' | translate }} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-chip [class]="claseSeveridad(element.severidad)">{{ claveSeveridad(element.severidad) | translate }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="alternativas">
+          <th mat-header-cell *matHeaderCellDef> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_ALTERNATIVAS' | translate }} </th>
+          <td mat-cell *matCellDef="let element" class="text-muted"> {{element.alternativas}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ocurrencias">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_HALLAZGOS_LENGUAJE.COL_OCURRENCIAS' | translate }} </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="badge-ocurrencias">{{element.ocurrencias || 1}}</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasMostrar"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasMostrar;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="6">{{ 'TABLA_HALLAZGOS_LENGUAJE.SIN_DATOS' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons class="modern-paginator"></mat-paginator>
+  </mat-card-content>
+</mat-card>

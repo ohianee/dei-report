@@ -1,0 +1,62 @@
+<mat-card class="modern-card">
+  <mat-card-header class="table-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>person</mat-icon>
+    </div>
+    <div>
+      <mat-card-title>{{ 'TABLA_DIVERSIDAD_AUTOR.TITULO' | translate }}</mat-card-title>
+      <mat-card-subtitle>{{ 'TABLA_DIVERSIDAD_AUTOR.SUBTITULO' | translate }}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content class="table-content">
+    <mat-form-field appearance="outline" class="search-field custom-input">
+      <mat-label>{{ 'TABLA_DIVERSIDAD_AUTOR.FILTRAR' | translate }}</mat-label>
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Ej. torvalds">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="modern-table">
+
+        <ng-container matColumnDef="author">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_DIVERSIDAD_AUTOR.COL_AUTOR' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> <strong class="author-name">{{element.author}}</strong> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="n_comentarios">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_DIVERSIDAD_AUTOR.COL_COMENTARIOS' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> {{element.n_comentarios}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="n_adjetivos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_DIVERSIDAD_AUTOR.COL_ADJETIVOS' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> {{element.n_adjetivos}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="entropia">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_DIVERSIDAD_AUTOR.COL_ENTROPIA' | translate }} </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span class="entropy-badge" [class.high-entropy]="element.entropia > 3" [class.low-entropy]="element.entropia <= 3">
+              {{element.entropia | number:'1.2-2'}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="simpson">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'TABLA_DIVERSIDAD_AUTOR.COL_SIMPSON' | translate }} </th>
+          <td mat-cell *matCellDef="let element" class="text-muted"> {{element.simpson | number:'1.2-2'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasMostrar"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasMostrar;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" colspan="5">{{ 'TABLA_DIVERSIDAD_AUTOR.SIN_DATOS' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons class="modern-paginator"></mat-paginator>
+  </mat-card-content>
+</mat-card>

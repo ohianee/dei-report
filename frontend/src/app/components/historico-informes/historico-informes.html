@@ -1,0 +1,90 @@
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>history</mat-icon>
+    </div>
+    <div>
+      <h1>
+        {{ 'HISTORICO.TITULO' | translate }}
+        @if (isBrowser() && !esInvitado()) {
+          {{ 'HISTORICO.TITULO_DE' | translate }} {{ nombreUsuario() | titlecase }}
+        }
+      </h1>
+      <p class="subtitle">{{ 'HISTORICO.SUBTITULO' | translate }}</p>
+    </div>
+  </header>
+
+  @if (isBrowser() && esInvitado()) {
+    <div class="aviso-invitado">
+      <mat-icon>info</mat-icon>
+      <span>{{ 'HISTORICO.AVISO_INVITADO' | translate }}</span>
+    </div>
+  }
+
+  <mat-card class="modern-card">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>{{ 'HISTORICO.BUSCAR' | translate }}</mat-label>
+        <input matInput (input)="aplicarFiltro($event)" placeholder="Ej. kubernetes">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" [trackBy]="trackByJobId" matSort class="modern-table">
+          
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORICO.COL_FECHA' | translate }}</th>
+            <td mat-cell *matCellDef="let element" class="text-muted"> {{ element.fecha | date:'short' }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="job_id">
+            <th mat-header-cell *matHeaderCellDef>{{ 'HISTORICO.COL_ID_TAREA' | translate }}</th>
+            <td mat-cell *matCellDef="let element" class="job-id-cell"> <span class="job-id">{{ element.job_id }}</span> </td>
+          </ng-container>
+
+          <ng-container matColumnDef="objetivo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORICO.COL_OBJETIVO' | translate }}</th>
+            <td mat-cell *matCellDef="let element" class="fw-bold"> {{ element.objetivo }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORICO.COL_ESTADO' | translate }}</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="status-badge" [class.completado]="element.estado === 'completado'" [class.error]="element.estado !== 'completado'">
+                {{ 'ESTADOS.' + element.estado | uppercase | translate }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>{{ 'HISTORICO.COL_ACCIONES' | translate }}</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="actions-container">
+                <button mat-icon-button class="action-btn" [routerLink]="['/informe', element.job_id]" [disabled]="element.estado !== 'completado'" [matTooltip]="'HISTORICO.VER_INFORME_TOOLTIP' | translate">
+                    <mat-icon>visibility</mat-icon>
+                </button>
+                
+                <button mat-icon-button class="action-btn" (click)="descargarInforme(element.job_id, $event)" [disabled]="element.estado !== 'completado'" [matTooltip]="'HISTORICO.DESCARGAR_TOOLTIP' | translate">
+                    <mat-icon>download</mat-icon>
+                </button>
+
+                <button mat-icon-button class="action-btn delete-icon" (click)="borrarInforme(element.job_id, $event)" [matTooltip]="'HISTORICO.BORRAR_TOOLTIP' | translate">
+                    <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnasMostrar"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnasMostrar;" class="clickable-row" (click)="verEstadoTrabajo(row.job_id)"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data" colspan="5">{{ 'HISTORICO.SIN_DATOS' | translate }}</td>
+          </tr>
+        </table>
+      </div>
+      <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons class="modern-paginator"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

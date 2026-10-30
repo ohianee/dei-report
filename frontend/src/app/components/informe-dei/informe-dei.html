@@ -1,0 +1,230 @@
+@if (cargando()) {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ 'INFORME_DEI.CARGANDO' | translate }}</p>
+  </div>
+}
+
+@if (errorMsj()) {
+  <div class="dashboard-container">
+    <mat-card class="modern-card">
+      <mat-card-content>
+        <div class="error-wrapper">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <h3>{{ 'INFORME_DEI.ERROR_TITULO' | translate }}</h3>
+          <p>{{ errorMsj() }}</p>
+          <button mat-raised-button class="btn-primary" routerLink="/inicio">
+            {{ 'INFORME_DEI.VOLVER_INICIO' | translate }}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
+
+@if (!cargando() && informe(); as datos) {
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="title-group">
+      <h1>{{ 'INFORME_DEI.TITULO' | translate }}</h1>
+      <span class="ref-badge">{{ 'INFORME_DEI.REF' | translate }}: {{ jobId() }}</span>
+    </div>
+  </header>
+
+  <section class="metrics-grid">
+    <mat-card class="metric-card modern-card">
+      <div class="metric-content">
+        <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_ENTROPIA' | translate }}</mat-card-subtitle>
+        <h2 class="metric-value">{{ datos.metricasGlobales.entropia_shannon | number:'1.2-2' }}</h2>
+        <small class="metric-hint">{{ 'INFORME_DEI.METRICA_ENTROPIA_HINT' | translate }}</small>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card modern-card">
+      <div class="metric-content">
+        <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_SIMPSON' | translate }}</mat-card-subtitle>
+        <h2 class="metric-value">{{ datos.metricasGlobales.indice_simpson | number:'1.2-2' }}</h2>
+        <small class="metric-hint">{{ 'INFORME_DEI.METRICA_SIMPSON_HINT' | translate }}</small>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card modern-card">
+      <div class="metric-content">
+        <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_TTR' | translate }}</mat-card-subtitle>
+        <h2 class="metric-value">{{ datos.metricasGlobales.ratio_unicos | percent:'1.1-2' }}</h2>
+        <small class="metric-hint">{{ 'INFORME_DEI.METRICA_TTR_HINT' | translate }}</small>
+      </div>
+    </mat-card>
+
+    <mat-card class="metric-card modern-card">
+      <div class="metric-content">
+        <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_SCORE' | translate }}</mat-card-subtitle>
+        <h2 class="metric-value">{{ datos.lenguajeInclusivoCodigo.scoreGlobal | number:'1.1-1' }}</h2>
+        <small class="metric-hint">{{ 'INFORME_DEI.METRICA_SCORE_HINT' | translate }}</small>
+      </div>
+    </mat-card>
+  </section>
+
+  <mat-tab-group class="dashboard-tabs" animationDuration="200ms">
+
+    <mat-tab [label]="'INFORME_DEI.TAB_DIVERSIDAD' | translate">
+      <section class="charts-grid">
+        <mat-card class="modern-card chart-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="chart-icon">psychology</mat-icon>
+            <mat-card-title>{{ 'INFORME_DEI.CHART_BIG_FIVE' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+              <app-grafico-radar-big5 [datos]="datos.bigFive"></app-grafico-radar-big5>
+            } @else {
+              <div class="no-data-msg">
+                <mat-icon>speaker_notes_off</mat-icon>
+                <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="modern-card chart-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="chart-icon">code</mat-icon>
+            <mat-card-title>{{ 'INFORME_DEI.CHART_TONO_CODIGO' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+              <app-grafico-tono-codigo [datos]="datos.tonoCodigo"></app-grafico-tono-codigo>
+            } @else {
+              <div class="no-data-msg">
+                <mat-icon>speaker_notes_off</mat-icon>
+                <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </section>
+
+      <section class="tables-grid">
+        <div class="table-wrapper">
+          @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+            <app-tabla-diversidad-autor [datos]="datos.diversidadAutores"></app-tabla-diversidad-autor>
+          } @else {
+            <div class="no-data-msg">
+              <mat-icon>speaker_notes_off</mat-icon>
+              <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+            </div>
+          }
+        </div>
+        <div class="table-wrapper">
+          @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+            <app-tabla-diversidad-repo [datos]="datos.diversidadRepos"></app-tabla-diversidad-repo>
+          } @else {
+            <div class="no-data-msg">
+              <mat-icon>speaker_notes_off</mat-icon>
+              <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+            </div>
+          }
+        </div>
+      </section>
+    </mat-tab>
+
+    <mat-tab [label]="'INFORME_DEI.TAB_LENGUAJE' | translate">
+      <section class="charts-grid">
+        <mat-card class="modern-card chart-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="chart-icon">spellcheck</mat-icon>
+            <mat-card-title>{{ 'INFORME_DEI.CHART_SCORE_INCLUSIVIDAD' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-grafico-score-inclusividad [datos]="datos.lenguajeInclusivoCodigo.resumenRepos"></app-grafico-score-inclusividad>
+          </mat-card-content>
+        </mat-card>
+      </section>
+
+      <section class="tables-grid">
+        <div class="table-wrapper">
+          <app-tabla-lenguaje-repo [datos]="datos.lenguajeInclusivoCodigo.resumenRepos"></app-tabla-lenguaje-repo>
+        </div>
+      </section>
+
+      <section class="tables-grid tables-grid-full">
+        <div class="table-wrapper">
+          <app-tabla-hallazgos-lenguaje [datos]="datos.lenguajeInclusivoCodigo.hallazgos"></app-tabla-hallazgos-lenguaje>
+        </div>
+      </section>
+    </mat-tab>
+
+    <mat-tab [label]="'INFORME_DEI.TAB_CLIMA' | translate">
+      <section class="metrics-grid">
+        <mat-card class="metric-card modern-card">
+          <div class="metric-content">
+            <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_COMENTARIOS_ANALIZADOS' | translate }}</mat-card-subtitle>
+            <h2 class="metric-value">{{ datos.climaComunicacion.comentariosAnalizados }}</h2>
+            <small class="metric-hint">{{ 'INFORME_DEI.METRICA_COMENTARIOS_ANALIZADOS_HINT' | translate }}</small>
+          </div>
+        </mat-card>
+
+        <mat-card class="metric-card modern-card">
+          <div class="metric-content">
+            <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_COMENTARIOS_POSITIVOS' | translate }}</mat-card-subtitle>
+            <h2 class="metric-value">{{ datos.climaComunicacion.porcentajePositivos }}%</h2>
+          </div>
+        </mat-card>
+
+        <mat-card class="metric-card modern-card">
+          <div class="metric-content">
+            <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_COMENTARIOS_NEGATIVOS' | translate }}</mat-card-subtitle>
+            <h2 class="metric-value">{{ datos.climaComunicacion.porcentajeNegativos }}%</h2>
+          </div>
+        </mat-card>
+
+        <mat-card class="metric-card modern-card">
+          <div class="metric-content">
+            <mat-card-subtitle>{{ 'INFORME_DEI.METRICA_COMENTARIOS_TOXICOS' | translate }}</mat-card-subtitle>
+            <h2 class="metric-value">{{ datos.climaComunicacion.porcentajeToxicos }}%</h2>
+            <small class="metric-hint">
+              {{ 'INFORME_DEI.METRICA_COMENTARIOS_TOXICOS_HINT' | translate:{n: datos.climaComunicacion.comentariosToxicos} }}
+            </small>
+          </div>
+        </mat-card>
+      </section>
+
+      <section class="charts-grid">
+        <mat-card class="modern-card chart-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar class="chart-icon">sentiment_satisfied</mat-icon>
+            <mat-card-title>{{ 'INFORME_DEI.CHART_SENTIMIENTO' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+              <app-grafico-clima-comunicacion [datos]="datos.climaComunicacion"></app-grafico-clima-comunicacion>
+            } @else {
+              <div class="no-data-msg">
+                <mat-icon>speaker_notes_off</mat-icon>
+                <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </section>
+
+      <section class="tables-grid tables-grid-full">
+        <div class="table-wrapper">
+          @if (datos.climaComunicacion.comentariosAnalizados > 0) {
+            <app-tabla-hallazgos-comentarios [datos]="datos.hallazgosComentarios"></app-tabla-hallazgos-comentarios>
+          } @else {
+            <div class="no-data-msg">
+              <mat-icon>speaker_notes_off</mat-icon>
+              <p>{{ 'INFORME_DEI.SIN_COMENTARIOS' | translate }}</p>
+            </div>
+          }
+        </div>
+      </section>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>
+<app-chatbot-dei [jobId]="jobId()"></app-chatbot-dei>
+}

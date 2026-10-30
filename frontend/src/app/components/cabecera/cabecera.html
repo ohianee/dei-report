@@ -1,0 +1,131 @@
+<mat-toolbar class="main-toolbar">
+    <button mat-icon-button class="mobile-menu-btn" (click)="toggleMenu()">
+        <fa-icon [icon]="faBars"></fa-icon>
+    </button>
+    
+    <div class="logo-section" routerLink="/inicio">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <rect width="200" height="200" fill="transparent" />
+            <g>
+                <path d="M 35 90 A 5 5 0 0 0 30 95 V 130 H 50 V 95 A 5 5 0 0 0 45 90 Z" fill="var(--c-lavender-light)" />
+                <path d="M 65 60 A 5 5 0 0 0 60 65 V 155 L 80 130 V 65 A 5 5 0 0 0 75 60 Z" fill="var(--c-navy)" />
+                <path d="M 95 45 A 5 5 0 0 0 90 50 V 130 H 110 V 50 A 5 5 0 0 0 105 45 Z" fill="var(--c-purple-muted)" />
+                <path d="M 125 60 A 5 5 0 0 0 120 65 V 130 H 140 V 65 A 5 5 0 0 0 135 60 Z" fill="var(--c-navy)" />
+                <path d="M 155 85 A 5 5 0 0 0 150 90 V 130 H 170 V 90 A 5 5 0 0 0 165 85 Z" fill="var(--c-lavender-light)" />
+            </g>
+        </svg>
+        <span class="brand-name">DEI REPORT</span>
+    </div>
+    
+    <span class="flex-spacer"></span> 
+    
+    <div class="nav-links hide-nav">
+        <a mat-button routerLink="/inicio" routerLinkActive="active-link">
+            <fa-icon [icon]="faHome"></fa-icon> {{ 'CABECERA.INICIO' | translate | uppercase }}
+        </a>
+        <a mat-button routerLink="/nuevo-analisis" routerLinkActive="active-link">
+            <fa-icon [icon]="faChartBar"></fa-icon> {{ 'CABECERA.NUEVO_ANALISIS' | translate | uppercase }}
+        </a>
+        <a mat-button routerLink="/historico" routerLinkActive="active-link">
+            <fa-icon [icon]="faHistory"></fa-icon> {{ 'CABECERA.HISTORICO' | translate | uppercase }}
+        </a>
+    </div>
+    
+    <span class="flex-spacer hide-spacer"></span>
+
+    <button mat-button [matMenuTriggerFor]="menuIdiomas" class="lang-btn hide-lang">
+        <fa-icon [icon]="faGlobe"></fa-icon> 
+        <span class="lang-text">{{ idiomaService.idiomaActual() | uppercase }}</span>
+    </button>
+    <mat-menu #menuIdiomas="matMenu" class="modern-menu">
+        @for (idioma of idiomaService.idiomasDisponibles; track idioma.codigo) {
+            <button mat-menu-item (click)="cambiarIdioma(idioma.codigo)" [class.active-lang]="idiomaService.idiomaActual() === idioma.codigo">
+                {{ idioma.bandera }} {{ idioma.etiqueta }}
+            </button>
+        }
+    </mat-menu>
+    
+    <button mat-icon-button class="btn-ayuda hide-help" [matTooltip]="'CABECERA.AYUDA_TOOLTIP' | translate" (click)="abrirGuiaAyuda()">
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+    </button>
+
+    <div class="user-section hide-login">
+        @if (isBrowser()) {
+            @if (!usuario) {
+                <button mat-raised-button class="btn-login" (click)="abrirFormularioLogin()">
+                    <fa-icon [icon]="faSignInAlt"></fa-icon> <span>{{ 'CABECERA.LOGIN' | translate | uppercase }}</span>
+                </button>
+            }
+            @if (usuario) {
+                <button mat-button [matMenuTriggerFor]="menuUser" class="status-tag">
+                    <fa-icon [icon]="faUser"></fa-icon> <span class="username">{{ usuario.user | uppercase }}</span>
+                </button>
+                <mat-menu #menuUser="matMenu" class="modern-menu">
+                    <button mat-menu-item (click)="abrirPerfil()">
+                        <mat-icon>manage_accounts</mat-icon> {{ 'CABECERA.PERFIL' | translate }}
+                    </button>
+                    <button mat-menu-item (click)="logout()">
+                        <fa-icon [icon]="faSignOutAlt"></fa-icon> {{ 'CABECERA.CERRAR_SESION' | translate }}
+                    </button>
+                </mat-menu>
+            }
+        }
+    </div>
+</mat-toolbar>
+
+<div class="mobile-backdrop" [class.abierto]="menuAbierto" (click)="cerrarMenu()"></div>
+
+<div class="mobile-sidebar" [class.abierto]="menuAbierto">
+  <div class="sidebar-header">
+    <span class="sidebar-title">DEI REPORT</span>
+    <button mat-icon-button class="close-btn" (click)="cerrarMenu()">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+  
+  <div class="sidebar-links">
+    <a mat-button routerLink="/inicio" routerLinkActive="active-link" (click)="cerrarMenu()">
+        <fa-icon [icon]="faHome"></fa-icon> <span>{{ 'CABECERA.INICIO' | translate | uppercase }}</span>
+    </a>
+    <a mat-button routerLink="/nuevo-analisis" routerLinkActive="active-link" (click)="cerrarMenu()">
+        <fa-icon [icon]="faChartBar"></fa-icon> <span>{{ 'CABECERA.NUEVO_ANALISIS' | translate | uppercase }}</span>
+    </a>
+    <a mat-button routerLink="/historico" routerLinkActive="active-link" (click)="cerrarMenu()">
+        <fa-icon [icon]="faHistory"></fa-icon> <span>{{ 'CABECERA.HISTORICO' | translate | uppercase }}</span>
+    </a>
+    
+    <hr class="sidebar-divider">
+    
+    <span class="sidebar-section-title">IDIOMA</span>
+    @for (idioma of idiomaService.idiomasDisponibles; track idioma.codigo) {
+        <button mat-button class="sidebar-sub-btn" 
+                (click)="cambiarIdioma(idioma.codigo); cerrarMenu()" 
+                [class.active-link]="idiomaService.idiomaActual() === idioma.codigo">
+            <span class="idioma-bandera" style="font-size: 1.1em;">{{ idioma.bandera }}</span> <span>{{ idioma.etiqueta }}</span>
+        </button>
+    }
+
+    <hr class="sidebar-divider">
+    <span class="sidebar-section-title">{{ 'CABECERA.OPCIONES' | translate | uppercase }}</span>
+
+    <button mat-button class="sidebar-sub-btn" (click)="abrirGuiaAyuda(); cerrarMenu()">
+      <fa-icon [icon]="faQuestionCircle"></fa-icon> <span>{{ 'CABECERA.AYUDA_TOOLTIP' | translate }}</span>
+    </button>
+    
+    @if (isBrowser()) {
+        @if (!usuario) {
+            <button mat-button class="sidebar-sub-btn" (click)="abrirFormularioLogin(); cerrarMenu()">
+                <fa-icon [icon]="faSignInAlt"></fa-icon> <span>{{ 'CABECERA.LOGIN' | translate | uppercase }}</span>
+            </button>
+        }
+        @if (usuario) {
+            <button mat-button class="sidebar-sub-btn" (click)="abrirPerfil(); cerrarMenu()">
+                <fa-icon [icon]="faUserCog"></fa-icon> <span>{{ 'CABECERA.PERFIL' | translate }}</span>
+            </button>
+            <button mat-button class="sidebar-sub-btn" (click)="logout(); cerrarMenu()">
+                <fa-icon [icon]="faSignOutAlt"></fa-icon> <span>{{ 'CABECERA.CERRAR_SESION' | translate }}</span>
+            </button>
+        }
+    }
+  </div>
+</div>

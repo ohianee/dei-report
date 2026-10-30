@@ -1,0 +1,154 @@
+<div class="perfil-dialog-container">
+  <div class="perfil-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon>manage_accounts</mat-icon>
+      </div>
+      <div class="header-titles">
+        <h2>{{ 'PERFIL.TITULO' | translate }}</h2>
+        <p>{{ 'PERFIL.SUBTITULO' | translate }}</p>
+      </div>
+    </div>
+    <button class="close-btn" mat-dialog-close [matTooltip]="'COMUN.CERRAR' | translate"><mat-icon>close</mat-icon></button>
+  </div>
+
+  <mat-dialog-content class="perfil-content">
+    <mat-tab-group animationDuration="150ms" class="perfil-tabs">
+      
+      <mat-tab [label]="'PERFIL.TAB_DATOS' | translate">
+        <div class="tab-panel tab-datos">
+          @if (perfil) {
+            <div class="info-card">
+              <mat-icon class="avatar-icon">account_circle</mat-icon>
+              <div class="info-texto">
+                <span class="label">{{ 'PERFIL.USUARIO' | translate }}</span>
+                <span class="valor">{{ perfil.user | uppercase }}</span>
+              </div>
+            </div>
+            <div class="info-card stats-card">
+              <mat-icon>analytics</mat-icon>
+              <div class="info-texto">
+                <span class="label">{{ 'PERFIL.INFORMES_GENERADOS' | translate }}</span>
+                <span class="valor-destacado">{{ perfil.n_informes }}</span>
+              </div>
+            </div>
+
+            <div class="info-card github-card">
+              <mat-icon [class.github-conectado]="perfil.github_conectado">
+                {{ perfil.github_conectado ? 'check_circle' : 'code' }}
+              </mat-icon>
+              
+              <div class="info-texto">
+                <span class="label">{{ 'PERFIL.GITHUB_TITULO' | translate }}</span>
+                
+                @if (perfil.github_conectado) {
+                  <span class="valor">{{ 'PERFIL.GITHUB_CONECTADO' | translate }} (&#64;{{ perfil.github_login }})</span>
+                } @else {
+                  <span class="valor">{{ 'PERFIL.GITHUB_NO_CONECTADO' | translate }}</span>
+                }
+
+                <div class="acciones-github">
+                  @if (perfil.github_conectado) {
+                    <button mat-stroked-button class="btn-github" (click)="desconectarGithub()">
+                      <mat-icon>link_off</mat-icon> {{ 'PERFIL.GITHUB_DESCONECTAR' | translate }}
+                    </button>
+                  } @else {
+                    <button mat-raised-button class="btn-github btn-github-conectar" (click)="conectarGithub()">
+                      <mat-icon>link</mat-icon> {{ 'PERFIL.GITHUB_CONECTAR' | translate }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+            @if (mensajeGithub) {
+              <div class="alerta-error"><mat-icon>error_outline</mat-icon> {{ mensajeGithub }}</div>
+            }
+          } @else {
+            <div class="cargando"><mat-icon class="spin">autorenew</mat-icon></div>
+          }
+        </div>
+      </mat-tab>
+
+      <mat-tab [label]="'PERFIL.TAB_SEGURIDAD' | translate">
+        <div class="tab-panel tab-seguridad">
+          <form [formGroup]="formPassword" (ngSubmit)="cambiarPassword()">
+            
+            <mat-form-field appearance="outline" class="custom-input">
+              <mat-label>{{ 'PERFIL.PASS_ACTUAL' | translate }}</mat-label>
+              <input matInput [type]="ocultarActual() ? 'password' : 'text'" formControlName="passActual">
+              <mat-icon matPrefix>lock_outline</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="ocultarActual.set(!ocultarActual())">
+                <mat-icon>{{ ocultarActual() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="custom-input">
+              <mat-label>{{ 'PERFIL.PASS_NUEVA' | translate }}</mat-label>
+              <input matInput [type]="ocultarNueva() ? 'password' : 'text'" formControlName="passNueva">
+              <mat-icon matPrefix>vpn_key</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="ocultarNueva.set(!ocultarNueva())">
+                <mat-icon>{{ ocultarNueva() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="custom-input">
+              <mat-label>{{ 'PERFIL.PASS_REPITE' | translate }}</mat-label>
+              <input matInput [type]="ocultarRepite() ? 'password' : 'text'" formControlName="passRepite">
+              <mat-icon matPrefix>vpn_key</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="ocultarRepite.set(!ocultarRepite())">
+                <mat-icon>{{ ocultarRepite() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (formPassword.hasError('noCoinciden')) {
+                <mat-error>{{ 'PERFIL.PASS_NO_COINCIDE' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            @if (mensajeExito) {
+              <div class="alerta-exito"><mat-icon>check_circle</mat-icon> {{ mensajeExito }}</div>
+            }
+            @if (mensajeError) {
+              <div class="alerta-error"><mat-icon>error_outline</mat-icon> {{ mensajeError }}</div>
+            }
+
+            <div class="actions-right">
+              <button mat-raised-button class="btn-submit" type="submit" [disabled]="formPassword.invalid">
+                {{ 'PERFIL.ACTUALIZAR' | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <mat-tab [label]="'PERFIL.TAB_PELIGRO' | translate">
+        <div class="tab-panel tab-peligro">
+          <div class="aviso-peligro">
+            <mat-icon>warning</mat-icon>
+            <p>{{ 'PERFIL.BORRAR_AVISO' | translate }}</p>
+          </div>
+
+          <form [formGroup]="formBorrar" (ngSubmit)="borrarCuenta()">
+            <mat-form-field appearance="outline" class="custom-input input-danger">
+              <mat-label>{{ 'LOGIN.CONTRASENA' | translate }}</mat-label>
+              <input matInput [type]="ocultarBorrar() ? 'password' : 'text'" formControlName="passwordConfirm">
+              <mat-icon matPrefix>lock</mat-icon>
+              <button mat-icon-button matSuffix type="button" (click)="ocultarBorrar.set(!ocultarBorrar())">
+                <mat-icon>{{ ocultarBorrar() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            @if (errorBorrado) {
+              <div class="alerta-error"><mat-icon>error_outline</mat-icon> {{ errorBorrado }}</div>
+            }
+
+            <div class="actions-right">
+              <button mat-raised-button class="btn-danger" type="submit" [disabled]="formBorrar.invalid">
+                <mat-icon>delete_forever</mat-icon> {{ 'PERFIL.BORRAR_CUENTA' | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-dialog-content>
+</div>

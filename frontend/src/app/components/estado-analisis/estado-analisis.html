@@ -1,0 +1,53 @@
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>hourglass_bottom</mat-icon>
+    </div>
+    <div>
+      <h1>{{ 'ESTADO_ANALISIS.TITULO' | translate }}</h1>
+      <p class="subtitle">{{ 'ESTADO_ANALISIS.SUBTITULO' | translate }}</p>
+    </div>
+  </header>
+
+  <mat-card class="modern-card">
+    <mat-card-content>
+      @if (!errorMsj()) {
+        <div class="spinner-wrapper">
+          
+          @if (!estadoActual()) {
+            <div class="loading-init">
+              <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+              <p>{{ 'ESTADO_ANALISIS.CONECTANDO' | translate }}</p>
+            </div>
+          }
+
+          @if (estadoActual(); as estado) {
+            <div class="progress-info">
+              <h3>{{ 'ESTADO_ANALISIS.ESTADO' | translate }}: <strong>{{ 'ESTADOS.' + estado.estado | uppercase | translate }}</strong></h3>
+              <p>{{ getMensajeTraducido(estado.mensaje) }}</p>
+              
+              <div class="progress-bar-container">
+                <mat-progress-bar mode="determinate" [value]="progresoMostrado()" class="custom-progress"></mat-progress-bar>
+                <div class="progress-stats">
+                  <span class="percentage">{{ progresoMostrado() | number:'1.0-0' }}%</span>
+                  <span class="timer">{{ 'ESTADO_ANALISIS.TIEMPO' | translate }}: {{ tiempoFormateado() }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @else {
+        <div class="error-wrapper">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <h3>{{ 'ESTADO_ANALISIS.ERROR_TITULO' | translate }}</h3>
+          <p>{{ errorMsj() }}</p>
+          <button mat-raised-button class="btn-primary" routerLink="/nuevo-analisis">
+            {{ 'ESTADO_ANALISIS.VOLVER_INTENTAR' | translate }}
+          </button>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

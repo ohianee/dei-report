@@ -1,0 +1,106 @@
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="header-icon-wrapper">
+      <mat-icon>settings_suggest</mat-icon>
+    </div>
+    <div>
+      <h1>{{ 'SELECCION_REPOS.TITULO' | translate }}</h1>
+      <p class="subtitle">{{ 'SELECCION_REPOS.SUBTITULO' | translate }}</p>
+    </div>
+  </header>
+
+  <mat-card class="modern-card">
+    <mat-card-content>
+      <form [formGroup]="repoForm" (ngSubmit)="onSubmit()" class="config-form">
+        
+        @if (githubConectado()) {
+          <div class="aviso-github aviso-github--ok">
+            <mat-icon>verified</mat-icon>
+            <span>{{ 'SELECCION_REPOS.GITHUB_CONECTADO_HINT' | translate }}</span>
+          </div>
+        } @else if (estaLogueado && !cargandoGithub()) {
+          <div class="aviso-github">
+            <mat-icon>info</mat-icon>
+            <span>{{ 'SELECCION_REPOS.GITHUB_NO_CONECTADO_HINT' | translate }}</span>
+            <a class="aviso-github-link" (click)="abrirPerfilParaVincular()">{{ 'SELECCION_REPOS.GITHUB_VINCULAR_LINK' | translate }}</a>
+          </div>
+        }
+
+        <mat-radio-group formControlName="modo" class="modern-radio-group">
+          <mat-radio-button value="organizacion">{{ 'SELECCION_REPOS.ORGANIZACION_COMPLETA' | translate }}</mat-radio-button>
+          <mat-radio-button value="lista">{{ 'SELECCION_REPOS.LISTA_REPOS' | translate }}</mat-radio-button>
+        </mat-radio-group>
+        
+        @if (modo === 'organizacion') {
+          <mat-form-field appearance="outline" class="full-width config-input">
+            <mat-label>{{ 'SELECCION_REPOS.NOMBRE_ORGANIZACION' | translate }}</mat-label>
+            <input matInput formControlName="org" placeholder="ej. kubernetes" [matAutocomplete]="autoOrg">
+            <mat-icon matPrefix>domain</mat-icon>
+            <mat-autocomplete #autoOrg="matAutocomplete">
+              @for (org of orgsFiltradas(); track org.login) {
+                <mat-option [value]="org.login">{{ org.login }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        }
+        
+        @if (modo === 'lista') {
+          <div formArrayName="repos" class="repo-list">
+            @for (repo of repos.controls; track $index; let i = $index) {
+              <div class="repo-row" [formGroupName]="i">
+                <mat-form-field appearance="outline" class="flex-grow config-input">
+                  <mat-label>{{ 'SELECCION_REPOS.PROPIETARIO' | translate }}</mat-label>
+                  <input matInput formControlName="owner" placeholder="ej. psf" [matAutocomplete]="autoOwner">
+                  <mat-autocomplete #autoOwner="matAutocomplete">
+                    @for (r of reposFiltrados(i); track r.owner + '/' + r.repo) {
+                      <mat-option [value]="r.owner" (onSelectionChange)="seleccionarRepoPropio(i, r)">
+                        {{ r.owner }}/{{ r.repo }}
+                        @if (r.privado) { <mat-icon inline="true" class="icono-privado">lock</mat-icon> }
+                      </mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="flex-grow config-input">
+                  <mat-label>{{ 'SELECCION_REPOS.REPOSITORIO' | translate }}</mat-label>
+                  <input matInput formControlName="repo" placeholder="ej. requests" [matAutocomplete]="autoRepo">
+                  <mat-autocomplete #autoRepo="matAutocomplete">
+                    @for (r of reposFiltrados(i); track r.owner + '/' + r.repo) {
+                      <mat-option [value]="r.repo" (onSelectionChange)="seleccionarRepoPropio(i, r)">
+                        {{ r.owner }}/{{ r.repo }}
+                        @if (r.privado) { <mat-icon inline="true" class="icono-privado">lock</mat-icon> }
+                      </mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+                @if (repos.length > 1) {
+                  <button mat-icon-button type="button" class="btn-delete" (click)="removeRepo(i)" [matTooltip]="'SELECCION_REPOS.ELIMINAR_REPO_TOOLTIP' | translate">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+              </div>
+            }
+            <button mat-button type="button" class="btn-add-repo" (click)="addRepo()">
+              <mat-icon>add</mat-icon> {{ 'SELECCION_REPOS.ANADIR_REPOSITORIO' | translate }}
+            </button>
+          </div>
+        }
+        
+        @if (errorMsj) {
+          <div class="error-message">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMsj }}</span>
+          </div>
+        }
+        
+        <mat-card-actions class="form-actions">
+          <button mat-raised-button type="submit" class="btn-submit" [disabled]="repoForm.invalid || cargando">
+            {{ (cargando ? 'SELECCION_REPOS.INICIANDO_ANALISIS' : 'SELECCION_REPOS.COMENZAR_ANALISIS') | translate }}
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

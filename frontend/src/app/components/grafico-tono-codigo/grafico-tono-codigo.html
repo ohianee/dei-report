@@ -1,0 +1,18 @@
+<div class="contenedor-grafico">
+    <canvas baseChart
+    aria-hidden="true"
+    [datasets]="barChartDatasets"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [type]="'bar'">
+    </canvas>
+</div>
+
+<div class="sr-only">
+  <h3>{{ 'GRAFICOS_ACCESIBILIDAD.TONO_TITULO' | translate }}</h3>
+  <ul>
+    @for (tono of datos | keyvalue; track tono.key) {
+      <li>{{ claveCategoria(tono.key) | translate }}: {{ tono.value }} {{ 'GRAFICOS_ACCESIBILIDAD.APARICIONES' | translate }}</li>
+    }
+  </ul>
+</div>

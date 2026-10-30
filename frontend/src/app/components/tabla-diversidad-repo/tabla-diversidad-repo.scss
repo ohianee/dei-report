@@ -1,0 +1,131 @@
+.modern-card {
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-soft);
+  background-color: var(--c-white);
+  padding: 1rem;
+}
+
+.table-header {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .header-icon-wrapper {
+    background-color: var(--c-lavender-light);
+    color: var(--c-navy);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  mat-card-title {
+    color: var(--c-navy-darkest);
+    font-weight: 700;
+  }
+}
+
+.table-content {
+  margin-top: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--c-white);
+  border: 1px solid var(--c-lavender-light);
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+
+  th {
+    background-color: var(--c-white);
+    color: var(--c-navy-darkest);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--c-lavender);
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--c-lavender-light);
+    color: var(--c-dark-gray);
+    vertical-align: middle;
+  }
+
+  tr:hover { background-color: var(--c-lavender-light); }
+
+  .repo-name {
+    color: var(--c-navy);
+    font-family: monospace;
+    background-color: var(--c-lavender-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .text-muted { color: var(--c-gray); }
+  .fw-bold { font-weight: 700; }
+  .text-navy { color: var(--c-navy-darkest); }
+  
+  .ttr-badge {
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+    min-width: 45px;
+    background-color: var(--c-white);
+    border: 1px solid var(--c-purple-muted);
+    color: var(--c-navy);
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+}
+
+:host {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .modern-card {
+    padding: 0; 
+    border-radius: 0;
+    box-shadow: none;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .table-header { padding: 1rem; }
+  .search-field { padding: 0 1rem; }
+
+  .table-wrapper {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin-bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; 
+  }
+
+  .modern-table {
+    min-width: 700px;
+    
+    th, td {
+      padding: 0.75rem;
+      font-size: 0.85rem;
+    }
+  }
+}

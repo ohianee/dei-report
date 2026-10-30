@@ -1,0 +1,60 @@
+<div class="guia-dialog-container">
+  <div class="guia-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon>menu_book</mat-icon>
+      </div>
+      <div class="header-titles">
+        <h2>{{ 'GUIA_AYUDA.TITULO' | translate }}</h2>
+        <p>{{ 'GUIA_AYUDA.SUBTITULO' | translate }}</p>
+      </div>
+    </div>
+    <button class="close-btn" mat-dialog-close [matTooltip]="'COMUN.CERRAR' | translate"><mat-icon>close</mat-icon></button>
+  </div>
+
+  <mat-dialog-content class="guia-content">
+    <mat-tab-group animationDuration="150ms" class="guia-tabs">
+
+      <mat-tab [label]="'GUIA_AYUDA.TAB_GUIA' | translate">
+        <div class="tab-panel">
+          <div class="pasos-lista">
+            @for (icono of pasosIconos; track icono; let i = $index) {
+              <div class="paso-item">
+                <div class="paso-icono">
+                  <mat-icon>{{ icono }}</mat-icon>
+                </div>
+                <div class="paso-texto">
+                  <h3>{{ 'GUIA_AYUDA.PASO_' + (i + 1) + '_TITULO' | translate }}</h3>
+                  <p>{{ 'GUIA_AYUDA.PASO_' + (i + 1) + '_DESC' | translate }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab [label]="'GUIA_AYUDA.TAB_FAQ' | translate">
+        <div class="tab-panel">
+          <mat-accordion class="faq-accordion" multi="false">
+            @for (index of preguntasIndex; track index) {
+              <mat-expansion-panel class="faq-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>{{ 'GUIA_AYUDA.FAQ_' + index + '_P' | translate }}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <p>{{ 'GUIA_AYUDA.FAQ_' + index + '_R' | translate }}</p>
+              </mat-expansion-panel>
+            }
+          </mat-accordion>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="guia-actions">
+    <a mat-stroked-button class="btn-descargar" [href]="rutaPdf()" [download]="nombreDescarga()">
+      <mat-icon>picture_as_pdf</mat-icon> {{ 'GUIA_AYUDA.DESCARGAR_PDF' | translate }}
+    </a>
+    <button mat-raised-button mat-dialog-close class="btn-cerrar">{{ 'GUIA_AYUDA.ENTENDIDO' | translate }}</button>
+  </mat-dialog-actions>
+</div>

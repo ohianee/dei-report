@@ -1,0 +1,18 @@
+<div class="contenedor-grafico">
+    <canvas baseChart
+    aria-hidden="true"
+    [datasets]="barChartDatasets"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [type]="'bar'">
+    </canvas>
+</div>
+
+<div class="sr-only">
+  <h3>{{ 'GRAFICOS_ACCESIBILIDAD.SCORE_TITULO' | translate }}</h3>
+  <ul>
+    @for (repo of datos; track repo.repo) {
+      <li>{{ 'GRAFICOS_ACCESIBILIDAD.REPO_SCORE' | translate:{repo: repo.repo, score: repo.scoreInclusividad} }}</li>
+    }
+  </ul>
+</div>

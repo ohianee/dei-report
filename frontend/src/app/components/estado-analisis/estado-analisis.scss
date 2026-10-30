@@ -1,0 +1,129 @@
+.dashboard-container {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  .header-icon-wrapper {
+    background-color: var(--c-lavender-light);
+    color: var(--c-navy);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    flex-shrink: 0;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--c-navy-darkest);
+    font-weight: 800;
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    margin: 0.25rem 0 0 0;
+    color: var(--c-gray);
+    font-size: 1.1rem;
+  }
+}
+
+.modern-card {
+  width: 100%;
+  max-width: 1400px;
+  border-radius: var(--border-radius-card, 24px);
+  box-shadow: var(--shadow-soft, 0 10px 30px rgba(30, 39, 73, 0.08));
+  background: var(--c-white);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.progress-info {
+  h3 {
+    margin: 0 0 1rem 0;
+    color: var(--c-dark-gray);
+    strong { color: var(--c-navy); }
+  }
+  p { color: var(--c-gray); }
+}
+
+.custom-progress {
+  height: 12px;
+  border-radius: 6px;
+  
+  ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: var(--c-navy) !important;
+    background-color: var(--c-navy) !important;
+  }
+}
+
+.error-wrapper {
+  text-align: center;
+  color: var(--c-estado-mal);
+
+  .error-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary {
+    background-color: var(--c-navy);
+    color: white;
+    border-radius: var(--border-radius-btn);
+    padding: 0 2rem;
+    height: 50px;
+  }
+}
+
+.loading-init {
+  text-align: center;
+  p {
+    margin-top: 1.5rem;
+    color: var(--c-gray);
+    font-style: italic;
+  }
+}
+
+.progress-bar-container { margin-top: 1rem; }
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  
+  .percentage { color: var(--c-navy); }
+  .timer { color: var(--c-gray); }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container { padding: 1.5rem 1rem; }
+  .dashboard-header {
+    gap: 1rem; margin-bottom: 1.5rem;
+    h1 { font-size: 1.6rem; }
+  }
+  .modern-card { padding: 1.5rem 1rem; }
+  .progress-info h3 { font-size: 1.1rem; }
+
+  .error-wrapper {
+    .error-icon { font-size: 3rem; width: 3rem; height: 3rem; }
+    .btn-primary { width: 100%; }
+  }
+}

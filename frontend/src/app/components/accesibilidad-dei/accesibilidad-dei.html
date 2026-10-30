@@ -1,0 +1,117 @@
+<div class="dei-accesibilidad-wrapper">
+  @if (panelAbierto()) {
+    <div class="dei-backdrop" (click)="togglePanel()"></div>
+    <div class="dei-panel" role="dialog" aria-modal="true" [attr.aria-label]="'ACCESIBILIDAD.PANEL_ARIA_LABEL' | translate">
+      <div class="dei-header">
+        <div class="header-content">
+          <div class="header-icon-wrapper">
+            <mat-icon>accessibility_new</mat-icon>
+          </div>
+          <div class="header-titles">
+            <h2>{{ 'ACCESIBILIDAD.TITULO' | translate }}</h2>
+            <p>{{ 'ACCESIBILIDAD.SUBTITULO' | translate }}</p>
+          </div>
+        </div>
+        <button class="close-btn" [attr.aria-label]="'ACCESIBILIDAD.CERRAR_ARIA_LABEL' | translate" (click)="togglePanel()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="dei-content">
+        <div class="dei-seccion oculta-en-movil">
+          <span class="dei-seccion-titulo">{{ 'ACCESIBILIDAD.TAMANO_TEXTO' | translate }}</span>
+          <div class="dei-fila-botones">
+            <button mat-stroked-button (click)="disminuirFuente()">A-</button>
+            <span class="dei-porcentaje">{{ escalaFuente() }}%</span>
+            <button mat-stroked-button (click)="aumentarFuente()">A+</button>
+          </div>
+        </div>
+
+        <div class="dei-seccion">
+          <span class="dei-seccion-titulo">{{ 'ACCESIBILIDAD.LECTURA' | translate }}</span>
+          <button
+            class="dei-opcion-toggle"
+            [class.activo]="fuenteDislexia()"
+            (click)="toggleFuenteDislexia()"
+            [attr.aria-pressed]="fuenteDislexia()"
+          >
+            <mat-icon>menu_book</mat-icon>
+            <span>{{ 'ACCESIBILIDAD.TIPOGRAFIA_DISLEXIA' | translate }}</span>
+            @if (fuenteDislexia()) { <mat-icon class="dei-check">check</mat-icon> }
+          </button>
+
+          <button class="dei-opcion-toggle" [class.activo]="negrita()" (click)="toggleNegrita()" [attr.aria-pressed]="negrita()">
+              <mat-icon>format_bold</mat-icon>
+              <span>{{ 'ACCESIBILIDAD.TEXTO_NEGRITA' | translate }}</span>
+              @if (negrita()) 
+              { 
+                  <mat-icon class="dei-check">check</mat-icon> 
+              }
+          </button>
+        </div>
+
+        <div class="dei-seccion">
+          <span class="dei-seccion-titulo">{{ 'ACCESIBILIDAD.COLOR_DALTONISMO' | translate }}</span>
+          <div class="dei-paletas">
+            @for (p of paletasDisponibles; track p.valor) {
+              <button class="dei-paleta-btn" [class.activo]="paleta() === p.valor" (click)="seleccionarPaleta(p.valor)" [attr.aria-pressed]="paleta() === p.valor">
+                <span class="dei-muestra">
+                  @for (color of p.muestra; track color) {
+                    <span class="dei-color-dot" [style.background]="color"></span>
+                  }
+                </span>
+                <span class="dei-paleta-nombre">{{ p.etiqueta | translate }}</span>
+                @if (paleta() === p.valor) { <mat-icon class="dei-check">check</mat-icon> }
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="dei-seccion">
+          <span class="dei-seccion-titulo">{{ 'ACCESIBILIDAD.TEMA' | translate }}</span>
+          <div class="dei-fila-botones">
+            <button [class.activo]="tema() === 'claro'" (click)="seleccionarTema('claro')">
+              <mat-icon>light_mode</mat-icon>
+            </button>
+            <button [class.activo]="tema() === 'sistema'" (click)="seleccionarTema('sistema')">
+              <mat-icon>brightness_auto</mat-icon>
+            </button>
+            <button [class.activo]="tema() === 'oscuro'" (click)="seleccionarTema('oscuro')">
+              <mat-icon>dark_mode</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="dei-seccion">
+          <span class="dei-seccion-titulo">{{ 'ACCESIBILIDAD.ASISTENCIAS' | translate }}</span>
+          
+          <button class="dei-opcion-toggle" [class.activo]="lecturaAutomatica()" (click)="toggleLecturaAutomatica()">
+            <mat-icon>record_voice_over</mat-icon>
+            <span>{{ 'ACCESIBILIDAD.LECTURA_AUTOMATICA' | translate }}</span>
+            @if (lecturaAutomatica()) { <mat-icon class="dei-check">check</mat-icon> }
+          </button>
+        </div>
+      </div>
+
+      <div class="dei-actions">
+        <button mat-button class="btn-restablecer" (click)="restablecer()">
+          <mat-icon>restart_alt</mat-icon> {{ 'ACCESIBILIDAD.RESTABLECER' | translate }}
+        </button>
+        <button mat-raised-button class="btn-cerrar" (click)="togglePanel()">
+          {{ 'ACCESIBILIDAD.LISTO' | translate }}
+        </button>
+      </div>
+      
+    </div>
+  }
+  
+  <button
+      class="dei-boton-flotante" 
+      mat-fab 
+      color="primary"
+      [attr.aria-expanded]="panelAbierto()" 
+      (click)="togglePanel()"
+      [matTooltip]="'ACCESIBILIDAD.PANEL_ARIA_LABEL' | translate">
+        <mat-icon>accessibility_new</mat-icon>
+  </button>
+</div>

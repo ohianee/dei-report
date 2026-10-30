@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 200 200">
+    <g>
+        <path d="M 35 90 A 5 5 0 0 0 30 95 V 130 H 50 V 95 A 5 5 0 0 0 45 90 Z" fill="#efeaff"/>
+        <path d="M 65 60 A 5 5 0 0 0 60 65 V 155 L 80 130 V 65 A 5 5 0 0 0 75 60 Z" fill="#273469"/>
+        <path d="M 95 45 A 5 5 0 0 0 90 50 V 130 H 110 V 50 A 5 5 0 0 0 105 45 Z" fill="#8687b4"/>
+        <path d="M 125 60 A 5 5 0 0 0 120 65 V 130 H 140 V 65 A 5 5 0 0 0 135 60 Z" fill="#273469"/>
+        <path d="M 155 85 A 5 5 0 0 0 150 90 V 130 H 170 V 90 A 5 5 0 0 0 165 85 Z" fill="#efeaff"/>
+    </g>
+</svg>

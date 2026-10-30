@@ -1,0 +1,30 @@
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="title-group">
+      <div class="header-icon-wrapper">
+        <mat-icon>waving_hand</mat-icon>
+      </div>
+      <div>
+        <h1>{{ 'INICIO.BIENVENIDA' | translate }}</h1>
+        <p class="subtitle">{{ 'INICIO.SUBTITULO' | translate }}</p>
+      </div>
+    </div>
+  </header>
+
+  <mat-card class="modern-card hero-card">
+    <mat-card-content class="hero-content">
+      <p [innerHTML]="'INICIO.TEXTO_1' | translate:{ dei: '<strong>' + ('INICIO.DEI_DESTACADO' | translate) + '</strong>' }"></p>
+      <p>{{ 'INICIO.TEXTO_2' | translate }}</p>
+    </mat-card-content>
+    <mat-card-actions class="hero-actions">
+      <button mat-raised-button class="btn-primary" routerLink="/nuevo-analisis">
+        <mat-icon>play_arrow</mat-icon> {{ 'INICIO.INICIAR_ANALISIS' | translate | uppercase }}
+      </button>
+      <button mat-stroked-button class="btn-secondary" routerLink="/historico">
+        <mat-icon>history</mat-icon> {{ 'INICIO.VER_HISTORICO' | translate | uppercase }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>

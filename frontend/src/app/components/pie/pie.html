@@ -1,0 +1,45 @@
+<footer class="main-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      
+      <div class="footer-info">
+        <h3><fa-icon [icon]="faChartPie"></fa-icon> DEI REPORT</h3>
+        <p>{{ 'PIE.DESCRIPCION' | translate }}</p>
+        <div class="social-wrapper">
+          <a href="https://github.com" target="_blank" aria-label="GitHub"><fa-icon [icon]="faGithub"></fa-icon></a>
+          <a href="#" target="_blank" aria-label="LinkedIn"><fa-icon [icon]="faLinkedin"></fa-icon></a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>{{ 'PIE.NAVEGACION' | translate }}</h4>
+        <div class="links-col">
+          <a routerLink="/inicio">{{ 'PIE.INICIO' | translate }}</a>
+          <a routerLink="/nuevo-analisis">{{ 'PIE.LANZAR_ANALISIS' | translate }}</a>
+          <a routerLink="/historico">{{ 'PIE.HISTORICO' | translate }}</a>
+        </div>
+      </div>
+
+      <div class="footer-tech">
+        <h4>{{ 'PIE.IMPULSADO_POR' | translate }}</h4>
+        <ul>
+          <li><fa-icon [icon]="faCodeBranch"></fa-icon> GitHub API v3</li>
+          <li><fa-icon [icon]="faCodeBranch"></fa-icon> spaCy NLP</li>
+          <li><fa-icon [icon]="faCodeBranch"></fa-icon> RoBERTa (HuggingFace)</li>
+          <li><fa-icon [icon]="faCodeBranch"></fa-icon> FastAPI & Angular</li>
+        </ul>
+      </div>
+
+    </div>
+    
+    <div class="footer-bottom">
+      <p>{{ 'PIE.COPYRIGHT' | translate }}</p>
+      <p class="footer-author">
+        Naiara Gordillo
+      </p>
+      <p class="footer-tfm">
+        Trabajo de Fin de Máster - Universitat de València
+      </p>
+    </div>
+  </div>
+</footer>

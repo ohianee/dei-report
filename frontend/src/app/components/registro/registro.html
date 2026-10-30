@@ -1,0 +1,84 @@
+<div class="login-dialog-container">
+  <div class="login-header">
+    <div class="header-content">
+      <div class="header-icon-wrapper">
+        <mat-icon>person_add</mat-icon>
+      </div>
+      <div class="header-titles">
+        <h2>{{ 'REGISTRO.CREAR_CUENTA' | translate }}</h2>
+        <p>{{ 'REGISTRO.SUBTITULO' | translate }}</p>
+      </div>
+    </div>
+    <button class="close-btn" mat-dialog-close [matTooltip]="'COMUN.CERRAR' | translate"><mat-icon>close</mat-icon></button>
+  </div>
+
+  <form [formGroup]="formularioRegistro" (ngSubmit)="onSubmit()" class="login-form">
+    <mat-dialog-content>
+      <div class="form-wrapper">
+        <mat-form-field appearance="outline" class="custom-input">
+          <mat-label>{{ 'REGISTRO.USUARIO' | translate }}</mat-label>
+          <input matInput formControlName="nombre">
+          <mat-icon matPrefix>person</mat-icon>
+
+          @if (formularioRegistro.get('nombre')?.hasError('required') && formularioRegistro.get('nombre')?.touched) {
+            <mat-error>{{ 'REGISTRO.USUARIO_OBLIGATORIO' | translate }}</mat-error>
+          }
+          @if (formularioRegistro.get('nombre')?.hasError('minlength') && formularioRegistro.get('nombre')?.touched) {
+            <mat-error>{{ 'REGISTRO.USUARIO_MINLENGTH' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-input">
+          <mat-label>{{ 'REGISTRO.CONTRASENA' | translate }}</mat-label>
+          <input matInput [type]="ocultarPassword() ? 'password' : 'text'" formControlName="password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="ocultarPassword.set(!ocultarPassword())">
+            <mat-icon>{{ ocultarPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          @if (formularioRegistro.get('password')?.hasError('required') && formularioRegistro.get('password')?.touched) {
+            <mat-error>{{ 'REGISTRO.CONTRASENA_OBLIGATORIA' | translate }}</mat-error>
+          }
+          @if (formularioRegistro.get('password')?.hasError('minlength') && formularioRegistro.get('password')?.touched) {
+            <mat-error>{{ 'REGISTRO.CONTRASENA_MINLENGTH' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-input">
+          <mat-label>{{ 'REGISTRO.REPITE_CONTRASENA' | translate }}</mat-label>
+          <input matInput [type]="ocultarRepetirPassword() ? 'password' : 'text'" formControlName="passwordRepetir">
+          <mat-icon matPrefix>lock_clock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="ocultarRepetirPassword.set(!ocultarRepetirPassword())">
+            <mat-icon>{{ ocultarRepetirPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          @if (formularioRegistro.get('passwordRepetir')?.hasError('required') && formularioRegistro.get('passwordRepetir')?.touched) {
+            <mat-error>{{ 'REGISTRO.REPITE_OBLIGATORIO' | translate }}</mat-error>
+          }
+          @if (formularioRegistro.hasError('noCoinciden') && formularioRegistro.get('passwordRepetir')?.touched) {
+            <mat-error>{{ 'REGISTRO.CONTRASENAS_NO_COINCIDEN' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMensaje) {
+          <div class="login-error-mensaje">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ errorMensaje }}</span>
+          </div>
+        }
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="login-actions">
+      <button mat-button mat-dialog-close type="button" class="btn-cancel">{{ 'COMUN.CANCELAR' | translate }}</button>
+      <button mat-raised-button type="submit" class="btn-submit" [disabled]="formularioRegistro.invalid || enviando">
+        {{ (enviando ? 'REGISTRO.CREANDO_CUENTA' : 'REGISTRO.REGISTRARME') | translate | uppercase }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+
+  <div class="registro-link">
+    <span>{{ 'REGISTRO.YA_TIENES_CUENTA' | translate }}</span>
+    <button type="button" class="btn-link" (click)="abrirLogin()">{{ 'REGISTRO.INICIA_SESION' | translate }}</button>
+  </div>
+</div>
