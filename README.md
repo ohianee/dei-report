@@ -12,6 +12,28 @@ El proyecto tiene tres partes que se ejecutan por separado:
 
 ---
 
+## Demo
+
+![Demo de DEI Report](media/demo.gif)
+
+🎬 [Ver demo completa en vídeo](media/demo.mp4)
+
+## Capturas
+
+| Inicio | Nuevo análisis |
+|---|---|
+| ![Inicio](media/screenshots/dei_report_inicio.png) | ![Nuevo análisis](media/screenshots/dei_report_nuevo_analisis.png) |
+
+| Lenguaje inclusivo en código | Clima de comunicación |
+|---|---|
+| ![Lenguaje inclusivo](media/screenshots/informe_lenguaje_codigo.png) | ![Clima de comunicación](media/screenshots/informe_clima_comunicacion.png) |
+
+| Asistente de chat (IA) |
+|---|
+| ![Chat DEI](media/screenshots/informe_chat.png) |
+
+---
+
 ## 1. Requisitos previos
 
 - **Python 3.12**
